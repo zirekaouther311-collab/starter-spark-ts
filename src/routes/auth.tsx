@@ -97,7 +97,7 @@ function AuthPage() {
       } else if (message.includes("Email not confirmed")) {
         toast.error("يرجى تأكيد بريدك الإلكتروني أولاً — تحقق من صندوق الوارد");
       } else if (message.includes("already registered")) {
-        toast.error("هذا البريد مسجّل already — جرّب تسجيل الدخول");
+        toast.error("هذا البريد مسجّل مسبقاً — جرّب تسجيل الدخول");
       } else {
         toast.error("حدث خطأ، حاول مرة أخرى");
       }
@@ -261,7 +261,7 @@ function AuthPage() {
               </>
             ) : (
               <>
-                لديك حساب already؟{" "}
+                لديك حساب مسبقاً؟{" "}
                 <button
                   type="button"
                   onClick={() => switchMode("login")}
