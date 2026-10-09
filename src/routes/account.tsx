@@ -41,7 +41,7 @@ function AccountPage() {
           </span>
           <div>
             <h1 className="text-2xl font-bold text-foreground">
-              {user.user_metadata?.full_name ?? "حسابي"}
+              {(user.user_metadata?.["full_name"] as string | undefined) ?? "حسابي"}
             </h1>
             <p className="text-sm text-muted-foreground" dir="ltr">
               {user.email}

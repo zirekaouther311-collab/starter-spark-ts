@@ -9,15 +9,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-const searchSchema = (search: Record<string, unknown>) => ({
-  mode: search.mode === "signup" ? ("signup" as const) : ("login" as const),
-  role:
-    search.role === "seller"
-      ? ("seller" as const)
-      : search.role === "customer"
-        ? ("customer" as const)
-        : undefined,
-});
+const searchSchema = (search: Record<string, unknown>) => {
+  const result: { mode: "login" | "signup"; role?: "seller" | "customer" } = {
+    mode: search["mode"] === "signup" ? "signup" : "login",
+  };
+  if (search["role"] === "seller" || search["role"] === "customer") {
+    result.role = search["role"];
+  }
+  return result;
+};
 
 export const Route = createFileRoute("/auth")({
   validateSearch: searchSchema,

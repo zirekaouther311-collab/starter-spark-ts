@@ -57,7 +57,7 @@ function SellerPage() {
           <div>
             <h1 className="text-2xl font-bold text-foreground">لوحة البائع</h1>
             <p className="text-sm text-muted-foreground">
-              مرحباً {user.user_metadata?.full_name ?? ""}
+              مرحباً {(user.user_metadata?.["full_name"] as string | undefined) ?? ""}
             </p>
           </div>
         </div>
