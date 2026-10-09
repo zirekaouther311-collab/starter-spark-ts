@@ -45,6 +45,13 @@ function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [sentTo, setSentTo] = useState<string | null>(null);
+
+  async function goToSpace(userId: string) {
+    const { data } = await supabase.from("user_roles").select("role").eq("user_id", userId);
+    const isSeller = (data ?? []).some((r) => r.role === "seller");
+    navigate({ to: isSeller ? "/seller" : "/account", replace: true });
+  }
 
   function switchMode(next: "login" | "signup") {
     setMode(next);
@@ -74,7 +81,7 @@ function AuthPage() {
           toast.error("اختر نوع الحساب أولاً: بائع أو زبون");
           return;
         }
-        const { error } = await supabase.auth.signUp({
+        const { data: created, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -83,12 +90,21 @@ function AuthPage() {
           },
         });
         if (error) throw error;
-        toast.success("تم إنشاء حسابك! تحقق من بريدك الإلكتروني لتأكيد الحساب.");
+        if (created.user && (created.user.identities?.length ?? 1) === 0) {
+          toast.error("هذا البريد مسجّل مسبقاً — جرّب تسجيل الدخول");
+          return;
+        }
+        if (created.session) {
+          toast.success("تم إنشاء حسابك بنجاح!");
+          await goToSpace(created.session.user.id);
+        } else {
+          setSentTo(email);
+        }
       } else {
-        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        const { data: signed, error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
         toast.success("مرحباً بعودتك!");
-        navigate({ to: "/" });
+        await goToSpace(signed.user.id);
       }
     } catch (err) {
       const message = err instanceof Error ? err.message : "";
@@ -139,6 +155,19 @@ function AuthPage() {
             </p>
           </div>
 
+          {sentTo ? (
+            <div className="space-y-4 text-center">
+              <Mail className="mx-auto h-10 w-10 text-primary" />
+              <p className="font-bold text-foreground">تحقق من بريدك الإلكتروني</p>
+              <p className="text-sm text-muted-foreground">
+                أرسلنا رابط التأكيد إلى <span dir="ltr">{sentTo}</span>. بعد التأكيد سجّل دخولك.
+              </p>
+              <Button className="w-full" onClick={() => { setSentTo(null); switchMode("login"); }}>
+                الذهاب لتسجيل الدخول
+              </Button>
+            </div>
+          ) : (
+          <>
           {/* Role selection card (signup only) */}
           {mode === "signup" && (
             <div className="mb-6 grid grid-cols-2 gap-3">
@@ -183,6 +212,9 @@ function AuthPage() {
             </div>
           )}
 
+          {mode === "signup" && !role && (
+            <p className="mb-4 text-center text-xs font-bold text-primary">اختر نوع حسابك لتفعيل الزر</p>
+          )}
           <form onSubmit={handleSubmit} className="space-y-4">
             {mode === "signup" && (
               <div className="space-y-2">
@@ -231,7 +263,7 @@ function AuthPage() {
               />
             </div>
 
-            <Button type="submit" className="w-full" size="lg" disabled={submitting}>
+            <Button type="submit" className="w-full" size="lg" disabled={submitting || (mode === "signup" && !role)}>
               {submitting && <Loader2 className="h-4 w-4 animate-spin" />}
               {mode === "login" ? "تسجيل الدخول" : "إنشاء الحساب"}
             </Button>
@@ -245,6 +277,9 @@ function AuthPage() {
             >
               نسيت كلمة المرور؟
             </button>
+          )}
+
+          </>
           )}
 
           <div className="mt-6 border-t pt-4 text-center text-sm text-muted-foreground">

@@ -39,7 +39,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "اكتشف أطباقاً جزائرية تقليدية محضّرة بحب من بائعين محليين. اطلب كسكس، بوراك، حلويات وأكثر — انطلاقاً من بسكرة.",
+          "اكتشف أطباقاً جزائرية تقليدية محضّرة بحب من بائعين محليين. اطلب كسكس، بوراك، حلويات وأكثر.",
       },
       {
         property: "og:title",
@@ -48,7 +48,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "اكتشف أطباقاً جزائرية تقليدية محضّرة بحب من بائعين محليين — انطلاقاً من بسكرة.",
+          "اكتشف أطباقاً جزائرية تقليدية محضّرة بحب من بائعين محليين.",
       },
     ],
   }),
@@ -73,7 +73,7 @@ function LandingPage() {
           <div className="animate-rise">
             <span className="inline-flex items-center gap-2 rounded-full border bg-card px-4 py-1.5 text-sm font-medium text-primary shadow-warm">
               <Sparkles className="h-4 w-4" />
-              انطلاقاً من بسكرة — نحو كل الولايات
+              نكهة الجزائر من بيوت أهلها
             </span>
             <h1 className="mt-6 text-4xl font-bold leading-snug text-foreground md:text-5xl md:leading-snug">
               أكل بيتي أصيل،
@@ -97,10 +97,6 @@ function LandingPage() {
                   بِع أطباقك معنا
                 </Link>
               </Button>
-            </div>
-            <div className="mt-8 flex items-center gap-2 text-sm text-muted-foreground">
-              <MapPin className="h-4 w-4 text-palm" />
-              متوفر حالياً في بسكرة — وقريباً في ولايات أخرى
             </div>
           </div>
 
@@ -243,32 +239,49 @@ function LandingPage() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Seller CTA */}
-      <section className="mx-auto max-w-6xl px-4 py-16">
-        <div className="shadow-warm-lg relative overflow-hidden rounded-3xl bg-palm px-8 py-12 text-center md:py-16">
-          <div className="pattern-zellige absolute inset-0 opacity-20" aria-hidden />
-          <div className="relative">
-            <h2 className="text-3xl font-bold text-palm-foreground md:text-4xl">
-              تحضّر أطباقاً تقليدية؟ حوّل شغفك إلى مصدر دخل
-            </h2>
-            <p className="mx-auto mt-4 max-w-xl text-palm-foreground/85">
-              أنشئ متجرك مجاناً، اعرض أطباقك بالصور، حدّد مناطق التوصيل الخاصة بك،
-              واستقبل الطلبات مباشرة.
-            </p>
-            <Button
-              size="lg"
-              variant="secondary"
-              className="mt-8"
-              asChild
+          <div className="mt-12 grid gap-6 md:grid-cols-2">
+            <Link
+              to="/auth"
+              search={{ mode: "signup", role: "customer" }}
+              className="group shadow-warm relative flex flex-col justify-between overflow-hidden rounded-3xl border bg-card p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-warm-lg"
             >
-              <Link to="/auth" search={{ mode: "signup", role: "seller" }}>
-                <Store className="h-5 w-5" />
-                سجّل كبائع الآن
-              </Link>
-            </Button>
+              <div className="pattern-zellige absolute inset-0 opacity-40" aria-hidden />
+              <div className="relative">
+                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-primary-foreground transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110">
+                  <ShoppingBasket className="h-7 w-7" />
+                </span>
+                <h3 className="mt-5 text-2xl font-bold text-foreground">أنا زبون</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                  اكتشف أطباقاً تقليدية محضّرة بحب، احفظ مفضّلاتك، وتابع طلباتك خطوة بخطوة.
+                </p>
+              </div>
+              <span className="relative mt-6 inline-flex items-center gap-2 font-bold text-primary">
+                أنشئ حساب زبون
+                <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-2" />
+              </span>
+            </Link>
+            <Link
+              to="/auth"
+              search={{ mode: "signup", role: "seller" }}
+              className="group shadow-warm relative flex flex-col justify-between overflow-hidden rounded-3xl bg-palm p-7 transition-all duration-300 hover:-translate-y-1.5 hover:shadow-warm-lg"
+            >
+              <div className="pattern-zellige absolute inset-0 opacity-20" aria-hidden />
+              <div className="relative">
+                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gold text-gold-foreground transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110">
+                  <ChefHat className="h-7 w-7" />
+                </span>
+                <h3 className="mt-5 text-2xl font-bold text-palm-foreground">
+                  لديك مهارة طبخ؟
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-palm-foreground/85">
+                  حوّل شغفك إلى مصدر دخل: أنشئ متجرك، اعرض أطباقك، وحدّد مناطق التوصيل بنفسك.
+                </p>
+              </div>
+              <span className="relative mt-6 inline-flex items-center gap-2 font-bold text-palm-foreground">
+                ابدأ البيع الآن
+                <ArrowLeft className="h-4 w-4 transition-transform duration-300 group-hover:-translate-x-2" />
+              </span>
+            </Link>
           </div>
         </div>
       </section>
@@ -312,7 +325,7 @@ function LandingPage() {
             <h4 className="font-bold text-foreground">تواصل معنا</h4>
             <p className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
               <MapPin className="h-4 w-4" />
-              بسكرة، الجزائر
+              الجزائر
             </p>
           </div>
         </div>

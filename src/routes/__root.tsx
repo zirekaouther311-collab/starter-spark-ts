@@ -86,14 +86,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "سوق جزائري للأكل التقليدي المنزلي — اكتشف أطباقاً أصيلة من بائعين محليين، انطلاقاً من بسكرة.",
+          "سوق جزائري للأكل التقليدي المنزلي — اكتشف أطباقاً أصيلة من بائعين محليين.",
       },
       { name: "author", content: "Dhouk Bladi" },
       { property: "og:title", content: "ذوق بلادي | Dhouk Bladi" },
       {
         property: "og:description",
         content:
-          "سوق جزائري للأكل التقليدي المنزلي — اكتشف أطباقاً أصيلة من بائعين محليين، انطلاقاً من بسكرة.",
+          "سوق جزائري للأكل التقليدي المنزلي — اكتشف أطباقاً أصيلة من بائعين محليين.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

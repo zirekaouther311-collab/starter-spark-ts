@@ -40,7 +40,7 @@ export function useAuth() {
         return;
       }
       setSession(nextSession);
-      void loadRoles(nextSession?.user ?? null);
+      setTimeout(() => void loadRoles(nextSession?.user ?? null), 0);
     });
 
     return () => {
